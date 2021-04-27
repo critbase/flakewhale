@@ -88,7 +88,7 @@ let
   funkwhaleEnvFileData = builtins.concatStringsSep "\n" funkwhaleEnvironment;
   funkwhaleEnvScriptData = builtins.concatStringsSep " " funkwhaleEnvironment;
 
-  funkwhaleEnvFile = pkgs.writeTExt "funkwhale.env" funkwhaleEnvFileData;
+  funkwhaleEnvFile = pkgs.writeText "funkwhale.env" funkwhaleEnvFileData;
   funkwhaleEnv = { ENV_FILE = "${funkwhaleEnvFile}"; };
 
   funkwhaleManageScript = writeShellScriptBin "funkwhale-manage"
