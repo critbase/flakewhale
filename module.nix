@@ -32,7 +32,10 @@ let
     ps.django_redis
     ps.django-rest-auth
     ps.djangorestframework
-    ps.djangorestframework-jwt
+    (ps.djangorestframework-jwt.overrideAttrs (attrs: {
+      buildInputs = [ pkgs.python3Packages.pyjwt ];
+      nativeBuildInputs = [ pkgs.python3Packages.pyjwt ];
+    }))
     ps.django-storages
     ps.django_taggit
     ps.django-versatileimagefield
