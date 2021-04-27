@@ -43,6 +43,7 @@
             };
 
             installPhase = ''
+              sed "s|env -S|env|g" -i front/*.sh
               mkdir $out
               cp -R ./* $out
             '';
