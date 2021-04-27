@@ -20,7 +20,7 @@
 
             src = fetchurl {
               url =
-                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${super.version}/funkwhale-${super.version}.tar.bz2";
+                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${self.version}/funkwhale-${self.version}.tar.bz2";
               sha256 = lib.fakeSha256;
             };
 
