@@ -225,6 +225,12 @@ in {
         default = "${cfg.dataDir}/static";
         description = "where static files are stored";
       };
+
+      djangoSecretKey = mkOption {
+        type = types.str;
+        description =
+          "django secret key. generate one using <command>openssl rand -base64 45</command>";
+      };
     };
 
     musicPath = mkOption {
