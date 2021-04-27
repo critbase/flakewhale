@@ -14,13 +14,14 @@
       overlay = final: prev: {
 
         funkwhale = with final;
-          (stdenv.mkDerivation {
+          (let version = "1.1.1";
+          in stdenv.mkDerivation {
             pname = "funkwhale";
-            version = "1.1.1";
+            inherit version;
 
             src = fetchurl {
               url =
-                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${self.version}/funkwhale-${self.version}.tar.bz2";
+                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${version}/funkwhale-${version}.tar.bz2";
               sha256 = lib.fakeSha256;
             };
 
