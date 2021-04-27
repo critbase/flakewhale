@@ -249,7 +249,7 @@ in {
 
     users.users.funkwhale = mkIf (cfg.user == "funkwhale") {
       group = cfg.group;
-      isSystemuser = true;
+      isSystemUser = true;
     };
 
     services.postgresql = {
