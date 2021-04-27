@@ -1,6 +1,5 @@
 {
 
-  #funkwhale-front url: https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/1.1.1/download?job=build_front
   description = "funkwhale flake";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -12,6 +11,24 @@
         nixpkgs.lib.genAttrs supportedSystems (system: f system);
     in {
       overlay = final: prev: {
+
+        funkwhale-frontend = with final;
+          (let version = "1.1.1";
+          in stdenv.mkDerivation {
+            pname = "funkwhale-frontend";
+            inherit version;
+
+            src = fetchurl {
+              url =
+                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${version}/download?job=build_front";
+              sha256 = lib.fakeSha256;
+            };
+
+            installPhase = ''
+              mkdir $out
+              cp -R ./* $out
+            '';
+          });
 
         funkwhale = with final;
           (let version = "1.1.1";

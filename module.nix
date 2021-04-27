@@ -370,7 +370,7 @@ in {
             ln -s ${funkwhaleEnvFile} ${cfg.dataDir}/.env
           fi
           if ! test -e ${cfg.dataDir}/front; then
-            cp -r ${pkgs.funkwhale-front} ${cfg.dataDir}/front
+            cp -r ${pkgs.funkwhale-frontend} ${cfg.dataDir}/front
           fi
         '';
       };
