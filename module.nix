@@ -91,7 +91,7 @@ let
   funkwhaleEnvFile = pkgs.writeText "funkwhale.env" funkwhaleEnvFileData;
   funkwhaleEnv = { ENV_FILE = "${funkwhaleEnvFile}"; };
 
-  funkwhaleManageScript = writeShellScriptBin "funkwhale-manage"
+  funkwhaleManageScript = pkgs.writeShellScriptBin "funkwhale-manage"
     "${funkwhaleEnvScriptData} ${pythonEnv.interpreter} ${pkgs.funkwhale}/api/manage.py";
 
 in {
