@@ -243,7 +243,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    nixpkgs.overlays = [ self.overlay ];
+    #nixpkgs.overlays = [ self.overlay ];
 
     environment.systemPackages = with pkgs; [ funkwhaleManageScript ];
 
