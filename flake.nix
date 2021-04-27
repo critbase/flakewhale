@@ -18,7 +18,7 @@
             pname = "funkwhale-frontend";
             inherit version;
 
-            src = fetchurl {
+            src = fetchzip {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${version}/download?job=build_front";
               sha256 = "2U8N6qiLjZDdELNjz4F6gPnSgiQZ6LvHKCus0nNREns=";
