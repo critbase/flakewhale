@@ -1,7 +1,6 @@
-#+title: README
+#+title: Flakewhale
 
 #+created: <2021-04-27 Tue 02:39>
-* Flakewhale
 much of the included code is from [[https://github.com/mmai/funkwhale-flake][mmai's work on creating a flake for funkwhale]].
 
 while I appreciate the work that mmai has done, I prefer tracking upstream funkwhale updates more closely, and think there's a few changes to the flake itself that would make it easier to use.
