@@ -8,8 +8,48 @@ while I appreciate the work that mmai has done, I prefer tracking upstream funkw
 
 thus, this repository was born.
 * example configuration
+this is roughly the configuration I use.
 #+begin_src nix
+{
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+  inputs.flakewhale.url = "github:critbase/flakewhale";
 
+  outputs = { self, nixpkgs, ... }@inputs: {
+    nixosConfigurations = {
+      example-host = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          # all your config here
+          nixpkgs.nixosModules.notDetected
+          inputs.flakewhale.nixosModule
+          ({ config, pkgs, lib, ... }: {
+            services.funkwhale = {
+              enable = true;
+              hostname = "funkwhale.example.com";
+              defaultFromEmail = "funkwhale@example.com";
+              protocol = "https";
+              forceSSL = true;
+
+              api.djangoSecretKey = "skelter-heaven";
+
+              # not strictly necessary unless you have port conflicts on 5000
+              apiPort = 5045;
+
+              # use this if you already have ACME certificates set up, and want to use them for funkwhale
+              # TODO: make this an option in module.nix
+              services.nginx.virtualHosts."funkwhale.example.com" = {
+                enableACME = lib.mkForce false;
+                useACMEHost = "example.com";
+              };
+              security.acme.certs."example.com".extraDomainNames =
+                [ "funkwhale.example.com" ];
+            };
+          })
+        ];
+      };
+    };
+  };
+}
 #+end_src
 * administration
 to make it easy, funkwhale's =manage.py= is wrapped with the proper libraries and installed into =environment.systemPackages= as =funkwhale-manage=.
@@ -19,12 +59,26 @@ this means any commands that would normally be passed to that =manage.py= comman
 for example:
 
 - to create a new superuser
-  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"=
+  ~# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"~
 
 - to import new music
-  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"=
+  ~# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"~
   + where ${LIBRARY_ID} is the library ID of the funkwhale library to which you want to add music.
 
   + generally, you should symlink already existing music folders into =/var/lib/funkwhale/music=, rather than specifying those directories separately when importing.
 
     the main reason for this is that the =funkwhale= user that funkwhale runs as generally does not (and probably shouldn't!) have permissions to even access music folders, or most folders, outside of =/var/lib/funkwhale=
+* ​TODO list
+** TODO add options to use existing ACME hosts
+:LOGBOOK:
+- State "TODO"       from              [2021-04-28 Wed 02:15]
+:END:
+this option would not be mutually exclusive with forceSSL (probably?)
+** TODO get funkwhale to "see" ffmpeg (if it isn't already)
+:LOGBOOK:
+- State "TODO"       from              [2021-04-28 Wed 02:16]
+:END:
+funkwhale spits out errors about not being able to find =ffprobe=; however, this may not even be a real issue.
+I don't actually use transcoding, so I don't actually know whether funkwhale transcodes or not.
+
+If you make use of transcoding and are willing to test things out, please reach out, open an issue, make a PR, etc.
