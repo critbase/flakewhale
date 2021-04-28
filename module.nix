@@ -96,7 +96,7 @@ let
 
   pythonEnv = (pkgs.python3.buildEnv.override {
     extraLibs = funkwhale-python-packages;
-    ignoreCollisions = true;
+    #ignoreCollisions = true;
   });
 
   databaseUrl =
