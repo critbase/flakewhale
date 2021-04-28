@@ -30,7 +30,7 @@
 
             installPhase = ''
               mkdir $out
-              cp -R ./* $out
+              cp -R ./dist/* $out
             '';
           });
 
