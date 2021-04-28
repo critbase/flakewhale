@@ -274,7 +274,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    environment.systemPackages = with pkgs; [ funkwhaleManageScript ];
+    environment.systemPackages = with pkgs; [ funkwhaleManageScript ffmpeg ];
 
     users.users.funkwhale = mkIf (cfg.user == "funkwhale") {
       group = cfg.group;
