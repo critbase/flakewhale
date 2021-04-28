@@ -6,6 +6,15 @@ let
 
   cfg = config.services.funkwhale;
 
+  pyjwt' = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
+    version = "1.7.1";
+    src = oldAttrs.src.override {
+      inherit version;
+      sha256 =
+        "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
+    };
+  });
+
   pythonEnv = pkgs.python3.withPackages (ps: [
     pkgs.ffmpeg
     ps.django-cacheops
@@ -32,16 +41,7 @@ let
     ps.django_redis
     ps.django-rest-auth
     ps.djangorestframework
-    (ps.djangorestframework-jwt.overridePythonAttrs (let
-      pyjwt' = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
-        version = "1.7.1";
-        src = oldAttrs.src.override {
-          inherit version;
-          sha256 =
-            "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
-        };
-      });
-    in oldAttrs: rec {
+    (ps.djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
       propagatedBuildInputs = with pkgs.python3Packages; [
         pyjwt'
         django
