@@ -69,6 +69,9 @@
           overlays = [ self.overlay ];
         }).funkwhale);
 
-      nixosModule = (import ./module.nix);
+      nixosModule = { ... }: {
+        nixpkgs.overlays = [ self.overlay ];
+        imports = [ ./module.nix ];
+      };
     };
 }
