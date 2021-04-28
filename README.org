@@ -7,5 +7,24 @@ much of the included code is from [[https://github.com/mmai/funkwhale-flake][mma
 while I appreciate the work that mmai has done, I prefer tracking upstream funkwhale updates more closely, and think there's a few changes to the flake itself that would make it easier to use.
 
 thus, this repository was born.
-* TODO example configuration
-coming as soon as I set this up myself!
+* example configuration
+#+begin_src nix
+
+#+end_src
+* administration
+to make it easy, funkwhale's =manage.py= is wrapped with the proper libraries and installed into =environment.systemPackages= as =funkwhale-manage=.
+
+this means any commands that would normally be passed to that =manage.py= command should instead be passed to the shell script =funkwhale-manage=.
+
+for example:
+
+- to create a new superuser
+  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"=
+
+- to import new music
+  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"=
+  + where ${LIBRARY_ID} is the library ID of the funkwhale library to which you want to add music.
+
+  + generally, you should symlink already existing music folders into =/var/lib/funkwhale/music=, rather than specifying those directories separately when importing.
+
+    the main reason for this is that the =funkwhale= user that funkwhale runs as generally does not (and probably shouldn't!) have permissions to even access music folders, or most folders, outside of =/var/lib/funkwhale=
