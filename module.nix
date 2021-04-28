@@ -298,33 +298,69 @@ in {
 
     services.nginx = {
       enable = true;
-      appendHttpConfig = ''
-        upstream funkwhale-api {
-          server ${cfg.apiIp}:${toString cfg.apiPort};
-        }
-      '';
+      upstreams = {
+        "funkwhale-api" = {
+          servers = { "${cfg.apiIp}:${toString cfg.apiPort}" = { }; };
+        };
+      };
       recommendedProxySettings = true;
       recommendedGzipSettings = true;
-      virtualHosts = let withSSL = cfg.protocol == "https";
+      virtualHosts = let
+        proxyConfig = ''
+          proxy_set_header X-Forwarded-Host $host:$server_port;
+          proxy_set_header X-Forwarded-Port $server_port;
+          proxy_redirect off;
+        '';
+        withSSL = cfg.protocol == "https";
       in {
         "${cfg.hostname}" = {
           enableACME = withSSL;
           forceSSL = cfg.forceSSL;
           root = "${cfg.dataDir}/front";
           locations = {
-            "/" = { proxyPass = "http://funkwhale-api/"; };
-            "/front/" = { alias = "${cfg.dataDir}/front/"; };
-            "= /front/embed.html" = {
+            "/" = {
+              proxyPass = "http://funkwhale-api/";
+              proxyWebsockets = true;
+              extraConfig = proxyConfig;
+            };
+            "/front/" = {
+              alias = "${cfg.dataDir}/front/";
+              extraConfig = ''
+                add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; media-src 'self' data:";
+                add_header Referrer-Policy "strict-origin-when-cross-origin";
+                add_header Serice-Worker-Allowed "/";
+                add_header X-Frame-Options "SAMEORIGIN";
+                expires 30d;
+                add_header Pragma public;
+                add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+              '';
+            };
+            "/front/embed.html" = {
               alias = "${cfg.dataDir}/front/embed.html";
+              extraConfig = ''
+                add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; media-src 'self' data:";
+                add_header Referrer-Policy "strict-origin-when-cross-origin";
+
+                add_header X-Frame-Options "ALLOW";
+                expires 30d;
+                add_header Pragma public;
+                add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+              '';
             };
             "/federation/" = {
               proxyPass = "http://funkwhale-api/federation/";
+              proxyWebsockets = true;
+              extraConfig = proxyConfig;
             };
             "/rest/" = {
               proxyPass = "http://funkwhale-api/api/subsonic/rest/";
+              proxyWebsockets = true;
+              extraConfig = proxyConfig;
             };
             "/.well-known/" = {
               proxyPass = "http://funkwhale-api/.well-known/";
+              proxyWebsockets = true;
+              extraConfig = proxyConfig;
             };
             "/media/" = { alias = "${cfg.api.mediaRoot}/"; };
             "/_protected/media/" = {
