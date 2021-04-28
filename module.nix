@@ -28,7 +28,6 @@ let
     };
   in (pkgs.python3.override { inherit packageOverrides; }).withPackages (ps: [
 
-    pkgs.ffmpeg
     ps.django-cacheops
     ps.aioredis
     ps.aiohttp
@@ -115,7 +114,6 @@ let
     "MUSIC_DIRECTORY_SERVE_PATH=${cfg.musicPath}"
     "FUNKWHALE_FRONTEND_PATH=${cfg.dataDir}/front"
     "FUNKWHALE_PLUGINS=funkwhale_api.contrib.scrobbler"
-    "PATH=${pkgs.ffmpeg}/bin:$PATH"
   ];
 
   funkwhaleEnvFileData = builtins.concatStringsSep "\n" funkwhaleEnvironment;
@@ -310,17 +308,9 @@ in {
       recommendedGzipSettings = true;
       virtualHosts = let
         proxyConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header X-Forwarded-Host $host:$server_port;
           proxy_set_header X-Forwarded-Port $server_port;
           proxy_redirect off;
-
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection $connection_upgrade;
         '';
         withSSL = cfg.protocol == "https";
       in {
@@ -355,7 +345,7 @@ in {
           locations = {
             "/" = {
               proxyPass = "http://funkwhale-api/";
-              #proxyWebsockets = true;
+              proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/front/" = {
@@ -384,17 +374,17 @@ in {
             };
             "/federation/" = {
               proxyPass = "http://funkwhale-api/federation/";
-              #proxyWebsockets = true;
+              proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/rest/" = {
               proxyPass = "http://funkwhale-api/api/subsonic/rest/";
-              #proxyWebsockets = true;
+              proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/.well-known/" = {
               proxyPass = "http://funkwhale-api/.well-known/";
-              #proxyWebsockets = true;
+              proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/media/".alias = "${cfg.api.mediaRoot}/";
