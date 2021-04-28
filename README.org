@@ -84,3 +84,7 @@ funkwhale spits out errors about not being able to find =ffprobe=; however, this
 I don't use transcoding, so I don't actually know whether funkwhale transcodes or not.
 
 If you make use of transcoding and are willing to test things out, please reach out, open an issue, make a PR, etc.
+** TODO autodetect and upgrade installed =front= files
+:LOGBOOK:
+- State "TODO"       from              [2021-04-28 Wed 02:59]
+:END:
