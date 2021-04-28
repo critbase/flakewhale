@@ -397,12 +397,12 @@ in {
               #proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
-            "/media/" = { alias = "${cfg.api.mediaRoot}/"; };
+            "/media/".alias = "${cfg.api.mediaRoot}/";
             "/_protected/media/" = {
               extraConfig = ''
                 internal;
               '';
-              alias = "${cfg.musicPath}/";
+              alias = "${cfg.api.mediaRoot}/";
             };
             "/staticfiles/" = { alias = "${cfg.api.staticRoot}/"; };
           };
