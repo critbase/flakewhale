@@ -355,7 +355,7 @@ in {
           locations = {
             "/" = {
               proxyPass = "http://funkwhale-api/";
-              proxyWebsockets = true;
+              #proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/front/" = {
@@ -384,17 +384,17 @@ in {
             };
             "/federation/" = {
               proxyPass = "http://funkwhale-api/federation/";
-              proxyWebsockets = true;
+              #proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/rest/" = {
               proxyPass = "http://funkwhale-api/api/subsonic/rest/";
-              proxyWebsockets = true;
+              #proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/.well-known/" = {
               proxyPass = "http://funkwhale-api/.well-known/";
-              proxyWebsockets = true;
+              #proxyWebsockets = true;
               extraConfig = proxyConfig;
             };
             "/media/" = { alias = "${cfg.api.mediaRoot}/"; };
