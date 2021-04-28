@@ -6,7 +6,7 @@ let
 
   cfg = config.services.funkwhale;
 
-  pyjwt = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
+  pyjwt' = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
     version = "1.7.1";
     src = oldAttrs.src.override {
       inherit version;
@@ -15,74 +15,76 @@ let
     };
   });
 
-  pythonEnv = pkgs.python3.withPackages (ps: [
-    pkgs.ffmpeg
-    ps.django-cacheops
-    ps.aioredis
-    ps.aiohttp
-    ps.arrow
-    ps.autobahn
-    ps.av
-    ps.bleach
-    ps.boto3
-    ps.celery
-    ps.channels
-    ps.channels-redis
-    ps.click
-    ps.django_2
-    ps.django-allauth
-    ps.django-auth-ldap
-    ps.django-oauth-toolkit
-    ps.django-cleanup
-    ps.django-cors-headers
-    ps.django-dynamic-preferences
-    ps.django_environ
-    ps.django-filter
-    ps.django_redis
-    ps.django-rest-auth
-    ps.djangorestframework
-    (ps.djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
-      propagatedBuildInputs = with pkgs.python3Packages; [
-        pyjwt
-        django
-        djangorestframework
-      ];
-    }))
-    ps.django-storages
-    ps.django_taggit
-    ps.django-versatileimagefield
-    ps.feedparser
-    ps.gunicorn
-    ps.kombu
-    ps.ldap
-    ps.markdown
-    ps.mutagen
-    ps.musicbrainzngs
-    ps.pillow
-    ps.pendulum
-    ps.persisting-theory
-    ps.psycopg2
-    ps.pyacoustid
-    ps.pydub
-    ps.PyLD
-    ps.pymemoize
-    ps.pyopenssl
-    ps.python_magic
-    ps.pytz
-    ps.redis
-    ps.requests
-    (ps.requests-http-signature.overridePythonAttrs (oldAttrs: rec {
-      propagatedBuildInputs = with pkgs.python3Packages; [
-        cryptography
-        requests
-      ];
-    }))
-    ps.service-identity
-    ps.unidecode
-    ps.unicode-slugify
-    ps.uvicorn
-    ps.watchdog
-  ]);
+  funkwhale-python-packages = python-packages:
+    with python-packages; [
+      django-cacheops
+      aioredis
+      aiohttp
+      arrow
+      autobahn
+      av
+      bleach
+      boto3
+      celery
+      channels
+      channels-redis
+      click
+      django_2
+      django-allauth
+      django-auth-ldap
+      django-oauth-toolkit
+      django-cleanup
+      django-cors-headers
+      django-dynamic-preferences
+      django_environ
+      django-filter
+      django_redis
+      django-rest-auth
+      djangorestframework
+      (djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
+        propagatedBuildInputs = with pkgs.python3Packages; [
+          pyjwt'
+          django
+          djangorestframework
+        ];
+      }))
+      django-storages
+      django_taggit
+      django-versatileimagefield
+      feedparser
+      gunicorn
+      kombu
+      ldap
+      markdown
+      mutagen
+      musicbrainzngs
+      pillow
+      pendulum
+      persisting-theory
+      psycopg2
+      pyacoustid
+      pydub
+      PyLD
+      pymemoize
+      pyopenssl
+      python_magic
+      pytz
+      redis
+      requests
+      (requests-http-signature.overridePythonAttrs (oldAttrs: rec {
+        propagatedBuildInputs = with pkgs.python3Packages; [
+          cryptography
+          requests
+        ];
+      }))
+      service-identity
+      unidecode
+      unicode-slugify
+      uvicorn
+      watchdog
+    ];
+
+  pythonEnv = pkgs.python3.withPackages funkwhale-python-packages;
 
   databaseUrl =
     "postgresql:///${cfg.database.name}?host=${cfg.database.socket}";
