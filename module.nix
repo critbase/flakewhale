@@ -84,9 +84,10 @@ let
       watchdog
     ];
 
-  pythonEnv = pkgs.python3.buildEnv funkwhale-python-packages {
+  pythonEnv = (pkgs.python3.buildEnv.override {
+    extraLibs = funkwhale-python-packages;
     ignoreCollisions = true;
-  };
+  });
 
   databaseUrl =
     "postgresql:///${cfg.database.name}?host=${cfg.database.socket}";
