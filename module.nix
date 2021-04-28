@@ -71,7 +71,9 @@ let
     ps.pytz
     ps.redis
     ps.requests
-    ps.requests-http-signature
+    (ps.requests-http-signature.overridePythonAttrs (oldAttrs: rec {
+      propagatedBuildInputs = with pkgs.python3Packages; [ cryptography ];
+    }))
     ps.service-identity
     ps.unidecode
     ps.unicode-slugify
