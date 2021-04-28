@@ -6,7 +6,7 @@ let
 
   cfg = config.services.funkwhale;
 
-  pyjwt' = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
+  pyjwt = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
     version = "1.7.1";
     src = oldAttrs.src.override {
       inherit version;
@@ -43,7 +43,7 @@ let
     ps.djangorestframework
     (ps.djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
       propagatedBuildInputs = with pkgs.python3Packages; [
-        pyjwt'
+        pyjwt
         django
         djangorestframework
       ];
@@ -262,8 +262,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-
-    #nixpkgs.overlays = [ self.overlay ];
 
     environment.systemPackages = with pkgs; [ funkwhaleManageScript ];
 
