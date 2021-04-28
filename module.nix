@@ -335,7 +335,7 @@ in {
                 add_header Cache-Control "public, must-revalidate, proxy-revalidate";
               '';
             };
-            "/front/embed.html" = {
+            "= /front/embed.html" = {
               alias = "${cfg.dataDir}/front/embed.html";
               extraConfig = ''
                 add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; media-src 'self' data:";
