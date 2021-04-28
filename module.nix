@@ -15,74 +15,73 @@ let
     };
   });
 
-  funkwhale-python-packages = python-packages:
-    with python-packages; [
-      django-cacheops
-      aioredis
-      aiohttp
-      arrow
-      autobahn
-      av
-      bleach
-      boto3
-      celery
-      channels
-      channels-redis
-      click
-      django_2
-      django-allauth
-      django-auth-ldap
-      django-oauth-toolkit
-      django-cleanup
-      django-cors-headers
-      django-dynamic-preferences
-      django_environ
-      django-filter
-      django_redis
-      django-rest-auth
-      djangorestframework
-      (djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
-        propagatedBuildInputs = with pkgs.python3Packages; [
-          pyjwt'
-          django
-          djangorestframework
-        ];
-      }))
-      django-storages
-      django_taggit
-      django-versatileimagefield
-      feedparser
-      gunicorn
-      kombu
-      ldap
-      markdown
-      mutagen
-      musicbrainzngs
-      pillow
-      pendulum
-      persisting-theory
-      psycopg2
-      pyacoustid
-      pydub
-      PyLD
-      pymemoize
-      pyopenssl
-      python_magic
-      pytz
-      redis
-      requests
-      (requests-http-signature.overridePythonAttrs (oldAttrs: rec {
-        propagatedBuildInputs = with pkgs.python3Packages; [
-          cryptography
-          requests
-        ];
-      }))
-      service-identity
-      unidecode
-      unicode-slugify
-      uvicorn
-      watchdog
-    ];
+  funkwhale-python-packages = with pkgs.python3Packages; [
+    django-cacheops
+    aioredis
+    aiohttp
+    arrow
+    autobahn
+    av
+    bleach
+    boto3
+    celery
+    channels
+    channels-redis
+    click
+    django_2
+    django-allauth
+    django-auth-ldap
+    django-oauth-toolkit
+    django-cleanup
+    django-cors-headers
+    django-dynamic-preferences
+    django_environ
+    django-filter
+    django_redis
+    django-rest-auth
+    djangorestframework
+    (djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
+      propagatedBuildInputs = with pkgs.python3Packages; [
+        pyjwt'
+        django
+        djangorestframework
+      ];
+    }))
+    django-storages
+    django_taggit
+    django-versatileimagefield
+    feedparser
+    gunicorn
+    kombu
+    ldap
+    markdown
+    mutagen
+    musicbrainzngs
+    pillow
+    pendulum
+    persisting-theory
+    psycopg2
+    pyacoustid
+    pydub
+    PyLD
+    pymemoize
+    pyopenssl
+    python_magic
+    pytz
+    redis
+    requests
+    (requests-http-signature.overridePythonAttrs (oldAttrs: rec {
+      propagatedBuildInputs = with pkgs.python3Packages; [
+        cryptography
+        requests
+      ];
+    }))
+    service-identity
+    unidecode
+    unicode-slugify
+    uvicorn
+    watchdog
+  ];
 
   pythonEnv = (pkgs.python3.buildEnv.override {
     extraLibs = funkwhale-python-packages;
