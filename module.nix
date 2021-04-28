@@ -28,6 +28,7 @@ let
     };
   in (pkgs.python3.override { inherit packageOverrides; }).withPackages (ps: [
 
+    pkgs.ffmpeg
     ps.django-cacheops
     ps.aioredis
     ps.aiohttp
