@@ -404,7 +404,13 @@ in {
               '';
               alias = "${cfg.api.mediaRoot}/";
             };
-            "/staticfiles/" = { alias = "${cfg.api.staticRoot}/"; };
+            "/_protected/music/" = {
+              extraConfig = ''
+                internal;
+              '';
+              alias = "${cfg.musicPath}/";
+            };
+            "/staticfiles/".alias = "${cfg.api.staticRoot}/";
           };
         };
       };
