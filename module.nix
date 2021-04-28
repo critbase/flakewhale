@@ -15,7 +15,17 @@ let
     };
   });
 
-  funkwhale-python-packages = with pkgs.python3Packages; [
+  funkwhale-python-packages = let
+    pkgs.python3Packages.pyjwt = pkgs.python3Packages.pyjwt.overridePythonAttrs
+      (oldAttrs: rec {
+        version = "1.7.1";
+        src = oldAttrs.src.override {
+          inherit version;
+          sha256 =
+            "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
+        };
+      });
+  in with pkgs.python3Packages; [
     django-cacheops
     aioredis
     aiohttp
