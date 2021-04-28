@@ -72,7 +72,10 @@ let
     ps.redis
     ps.requests
     (ps.requests-http-signature.overridePythonAttrs (oldAttrs: rec {
-      propagatedBuildInputs = with pkgs.python3Packages; [ cryptography ];
+      propagatedBuildInputs = with pkgs.python3Packages; [
+        cryptography
+        requests
+      ];
     }))
     ps.service-identity
     ps.unidecode
