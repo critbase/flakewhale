@@ -63,7 +63,9 @@ for example:
   =# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"=
 
 - to import new music, execute the following (as root)
+
   =# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"=
+
   + where ${LIBRARY_ID} is the library ID of the funkwhale library to which you want to add music.
 
   + generally, you should symlink already existing music folders into =/var/lib/funkwhale/music=, rather than specifying those directories separately when importing.
