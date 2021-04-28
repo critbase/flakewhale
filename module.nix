@@ -114,6 +114,7 @@ let
     "MUSIC_DIRECTORY_SERVE_PATH=${cfg.musicPath}"
     "FUNKWHALE_FRONTEND_PATH=${cfg.dataDir}/front"
     "FUNKWHALE_PLUGINS=funkwhale_api.contrib.scrobbler"
+    "PATH=${pkgs.ffmpeg}/bin:$PATH"
   ];
 
   funkwhaleEnvFileData = builtins.concatStringsSep "\n" funkwhaleEnvironment;
@@ -274,7 +275,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    environment.systemPackages = with pkgs; [ funkwhaleManageScript ffmpeg ];
+    environment.systemPackages = with pkgs; [ funkwhaleManageScript ];
 
     users.users.funkwhale = mkIf (cfg.user == "funkwhale") {
       group = cfg.group;
