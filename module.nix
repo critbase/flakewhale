@@ -303,6 +303,7 @@ in {
           servers = { "${cfg.apiIp}:${toString cfg.apiPort}" = { }; };
         };
       };
+      recommendedTlsSettings = true;
       recommendedProxySettings = true;
       recommendedGzipSettings = true;
       virtualHosts = let
@@ -317,6 +318,30 @@ in {
           enableACME = withSSL;
           forceSSL = cfg.forceSSL;
           root = "${cfg.dataDir}/front";
+          extraConfig = ''
+            add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; media-src 'self' data:";
+            add_header Referrer-Policy "strict-origin-when-cross-origin";
+
+            gzip_min_length 256;
+            gzip_types
+              application/javascript
+              application/vnd.geo+json
+              application/vnd.ms-fontobject
+              application/x-font-ttf
+              application/x-web-app-manifest+json
+              font/opentype
+              image/bmp
+              image/svg+xml
+              image/x-icon
+              text/cache-manifest
+              text/css
+              text/plain
+              text/vcard
+              text/vnd.rim.location.xloc
+              text/vtt
+              text/x-component
+              text/x-cross-domain-policy;
+          '';
           locations = {
             "/" = {
               proxyPass = "http://funkwhale-api/";
