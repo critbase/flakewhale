@@ -25,7 +25,7 @@ let
             "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
         };
       });
-  in with pkgs.python3Packages; [
+  in (with pkgs.python3Packages; [
     django-cacheops
     aioredis
     aiohttp
@@ -91,7 +91,7 @@ let
     unicode-slugify
     uvicorn
     watchdog
-  ];
+  ]);
 
   pythonEnv = (pkgs.python3.buildEnv.override {
     extraLibs = funkwhale-python-packages;
