@@ -18,6 +18,10 @@
             pname = "funkwhale-frontend";
             inherit version;
 
+            nativeBuildInputs = [ pkgs.unzip ];
+
+            unpackCmd = "unzip $curSrc";
+
             src = fetchzip {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${version}/download?job=build_front";
