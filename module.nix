@@ -274,6 +274,8 @@ in {
       isSystemUser = true;
     };
 
+    users.groups.funkwhale = mkIf (cfg.group == "funkwhale") { };
+
     services.postgresql = {
       enable = true;
       ensureDatabases = [ cfg.database.name ];
