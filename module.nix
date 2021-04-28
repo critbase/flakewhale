@@ -94,7 +94,22 @@ let
       watchdog
     ]);
 
-  pythonEnv = (pkgs.python3.buildEnv.override {
+  pythonEnv = (let
+    python = let
+      packageOverrides = self: super: {
+        pyjwt = super.pyjwt.overridePythonAttrs (old: rec {
+          version = "1.7.1";
+          src = oldAttrs.src.override {
+            inherit version;
+            sha256 = "";
+          };
+        });
+      };
+    in pkgs.python3.override {
+      inherit packageOverrides;
+      self = python;
+    };
+  in pkgs.python3.buildEnv.override {
     extraLibs = funkwhale-python-packages;
     #ignoreCollisions = true;
   });
