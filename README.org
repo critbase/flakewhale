@@ -58,11 +58,12 @@ this means any commands that would normally be passed to that =manage.py= comman
 
 for example:
 
-- to create a new superuser
-  ~# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"~
+- to create a new superuser, execute the following (as root)
 
-- to import new music
-  ~# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"~
+  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage createsuperuser"=
+
+- to import new music, execute the following (as root)
+  =# su -l funkwhale -s /bin/sh -c "funkwhale-manage import_files ${LIBRARY_ID} '/var/lib/funkwhale/music' --recursive --noinput --in-place"=
   + where ${LIBRARY_ID} is the library ID of the funkwhale library to which you want to add music.
 
   + generally, you should symlink already existing music folders into =/var/lib/funkwhale/music=, rather than specifying those directories separately when importing.
@@ -79,6 +80,6 @@ this option would not be mutually exclusive with forceSSL (probably?)
 - State "TODO"       from              [2021-04-28 Wed 02:16]
 :END:
 funkwhale spits out errors about not being able to find =ffprobe=; however, this may not even be a real issue.
-I don't actually use transcoding, so I don't actually know whether funkwhale transcodes or not.
+I don't use transcoding, so I don't actually know whether funkwhale transcodes or not.
 
 If you make use of transcoding and are willing to test things out, please reach out, open an issue, make a PR, etc.
