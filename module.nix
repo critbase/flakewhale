@@ -13,7 +13,6 @@ let
       sha256 =
         "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
     };
-    meta.priority = 5;
   });
 
   funkwhale-python-packages = python-packages:
@@ -85,7 +84,9 @@ let
       watchdog
     ];
 
-  pythonEnv = pkgs.python3.withPackages funkwhale-python-packages;
+  pythonEnv = pkgs.python3.buildEnv funkwhale-python-packages {
+    ignoreCollisions = true;
+  };
 
   databaseUrl =
     "postgresql:///${cfg.database.name}?host=${cfg.database.socket}";
