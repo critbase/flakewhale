@@ -13,6 +13,7 @@ let
       sha256 =
         "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
     };
+    doCheck = false;
   });
 
   pythonEnv = let
@@ -24,6 +25,7 @@ let
           sha256 =
             "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
         };
+        doCheck = false;
       });
     };
   in (pkgs.python3.override { inherit packageOverrides; }).withPackages (ps: [
@@ -459,6 +461,10 @@ in {
           Group = "${cfg.group}";
         };
         script = ''
+          rm -rf ${cfg.dataDir}/api
+          mkdir -p ${cfg.dataDir}/api
+          ln -sr ${pkgs.funkwhale-api} ${cfg.dataDir}/api
+
           ${pythonEnv.interpreter} ${pkgs.funkwhale}/api/manage.py migrate
           ${pythonEnv.interpreter} ${pkgs.funkwhale}/api/manage.py collectstatic --no-input
 

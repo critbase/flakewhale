@@ -6,6 +6,10 @@
 
   outputs = { self, nixpkgs }:
     let
+      version = "1.1.2";
+      # there appears to be some divergence between the develop and master branches in funkwhale's repo that causes breakage (for this flake, at least).
+      # i've decided to use the latest current develop branch so things work.
+      versionDevelopCommit = "8202c1879bd7174d82b4613f765aa7a82b7e65ef";
       supportedSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
       forAllSystems = f:
         nixpkgs.lib.genAttrs supportedSystems (system: f system);
@@ -13,10 +17,10 @@
       overlay = final: prev: {
 
         funkwhale-frontend = with final;
-          (let version = "1.1.1";
-          in stdenv.mkDerivation {
+          stdenv.mkDerivation {
             pname = "funkwhale-frontend";
             inherit version;
+            inherit versionDevelopCommit;
 
             nativeBuildInputs = [ pkgs.unzip ];
 
@@ -24,26 +28,26 @@
 
             src = fetchurl {
               url =
-                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${version}/download?job=build_front";
-              sha256 = "2U8N6qiLjZDdELNjz4F6gPnSgiQZ6LvHKCus0nNREns=";
+                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${versionDevelopCommit}/download?job=build_front";
+              sha256 = "1wyxgp8vr3id4cxvf445m64xj4nhv04ka8h406hhbfps6i420vvl";
             };
 
             installPhase = ''
               mkdir $out
               cp -R ./dist/* $out
             '';
-          });
+          };
 
         funkwhale = with final;
-          (let version = "1.1.1";
-          in stdenv.mkDerivation {
+          stdenv.mkDerivation {
             pname = "funkwhale";
             inherit version;
+            inherit versionDevelopCommit;
 
             src = fetchurl {
               url =
-                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${version}/funkwhale-${version}.tar.bz2";
-              sha256 = "0qn26acfww6bbvcmwhvsgmlbc6y9bp3hjvhhywfi6f116x2vs81d";
+                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${versionDevelopCommit}/funkwhale-${versionDevelopCommit}.tar.bz2";
+              sha256 = "50HuWzt8s58I6qlvwI26/Lg00+IWVnMDO20Pw9HSHQ0=";
             };
 
             installPhase = ''
@@ -59,7 +63,7 @@
               platforms = platforms.linux;
               maintainers = with maintainers; [ critbase ];
             };
-          });
+          };
 
       };
 
