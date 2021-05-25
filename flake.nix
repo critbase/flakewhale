@@ -29,7 +29,7 @@
             src = fetchurl {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${versionDevelopCommit}/download?job=build_api";
-              sha256 = "oAV+3P9xYyfknq/nz/leZJGfjm8yVBUlzBRiolCXY14=";
+              sha256 = lib.fakeSha256;
             };
 
             installPhase = ''
@@ -69,7 +69,7 @@
             src = fetchurl {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${versionDevelopCommit}/funkwhale-${versionDevelopCommit}.tar.bz2";
-              sha256 = "0d0flp5v0swmiliz1bj1rxhpxqsbqy23jra3dnha12v41sklha87";
+              sha256 = "50HuWzt8s58I6qlvwI26/Lg00+IWVnMDO20Pw9HSHQ0=";
             };
 
             installPhase = ''
