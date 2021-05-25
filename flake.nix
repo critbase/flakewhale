@@ -29,7 +29,7 @@
             src = fetchurl {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${versionDevelopCommit}/download?job=build_api";
-              sha256 = lib.fakeSha256;
+              sha256 = "BWyrMZ4GITdr35vzvQGs9HD3yi5EZ6a4NAbmAN8vqu4=";
             };
 
             installPhase = ''
