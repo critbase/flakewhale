@@ -432,11 +432,14 @@ in {
 
           if ! test -e ${cfg.dataDir}/config; then
             mkdir -p ${cfg.dataDir}/config
-            ln -s ${funkwhaleEnvFile} ${cfg.dataDir}/config/.env
-            ln -s ${funkwhaleEnvFile} ${cfg.dataDir}/.env
+            ln -sr ${funkwhaleEnvFile} ${cfg.dataDir}/config/.env
+            ln -sr ${funkwhaleEnvFile} ${cfg.dataDir}/.env
           fi
           if ! test -e ${cfg.dataDir}/front; then
-            cp -r ${pkgs.funkwhale-frontend} ${cfg.dataDir}/front
+            ln -sr ${pkgs.funkwhale-frontend} ${cfg.dataDir}/front
+          fi
+          if ! test -e ${cfg.dataDir}/api; then
+            ln -sr ${pkgs.funkwhale-api} ${cfg.dataDir}/api
           fi
         '';
       };
