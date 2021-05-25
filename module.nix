@@ -461,10 +461,6 @@ in {
           Group = "${cfg.group}";
         };
         script = ''
-          rm -rf ${cfg.dataDir}/api
-          mkdir -p ${cfg.dataDir}/api
-          ln -sr ${pkgs.funkwhale-api} ${cfg.dataDir}/api
-
           ${pythonEnv.interpreter} ${pkgs.funkwhale}/api/manage.py migrate
           ${pythonEnv.interpreter} ${pkgs.funkwhale}/api/manage.py collectstatic --no-input
 
