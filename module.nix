@@ -6,28 +6,7 @@ let
 
   cfg = config.services.funkwhale;
 
-  pyjwt' = pkgs.python3Packages.pyjwt.overridePythonAttrs (oldAttrs: rec {
-    version = "1.7.1";
-    src = oldAttrs.src.override {
-      inherit version;
-      sha256 =
-        "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
-    };
-  });
-
-  pythonEnv = let
-    packageOverrides = self: super: {
-      pyjwt = super.pyjwt.overridePythonAttrs (old: rec {
-        version = "1.7.1";
-        src = old.src.override {
-          inherit version;
-          sha256 =
-            "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96";
-        };
-      });
-    };
-  in (pkgs.python3.override { inherit packageOverrides; }).withPackages (ps: [
-
+  pythonEnv = pkgs.python3.withPackages (ps: [
     ps.django-cacheops
     ps.aioredis
     ps.aiohttp
@@ -52,13 +31,7 @@ let
     ps.django_redis
     ps.django-rest-auth
     ps.djangorestframework
-    (ps.djangorestframework-jwt.overridePythonAttrs (oldAttrs: rec {
-      propagatedBuildInputs = with pkgs.python3Packages; [
-        pyjwt'
-        django
-        djangorestframework
-      ];
-    }))
+    ps.drf-jwt
     ps.django-storages
     ps.django_taggit
     ps.django-versatileimagefield
@@ -82,12 +55,7 @@ let
     ps.pytz
     ps.redis
     ps.requests
-    (ps.requests-http-signature.overridePythonAttrs (oldAttrs: rec {
-      propagatedBuildInputs = with pkgs.python3Packages; [
-        cryptography
-        requests
-      ];
-    }))
+    ps.requests-http-signature
     ps.service-identity
     ps.unidecode
     ps.unicode-slugify
