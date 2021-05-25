@@ -6,6 +6,7 @@
 
   outputs = { self, nixpkgs }:
     let
+      version = "1.1.2";
       supportedSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
       forAllSystems = f:
         nixpkgs.lib.genAttrs supportedSystems (system: f system);
@@ -13,8 +14,7 @@
       overlay = final: prev: {
 
         funkwhale-frontend = with final;
-          (let version = "1.1.1";
-          in stdenv.mkDerivation {
+          stdenv.mkDerivation {
             pname = "funkwhale-frontend";
             inherit version;
 
@@ -25,25 +25,24 @@
             src = fetchurl {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${version}/download?job=build_front";
-              sha256 = "2U8N6qiLjZDdELNjz4F6gPnSgiQZ6LvHKCus0nNREns=";
+              sha256 = "1wyxgp8vr3id4cxvf445m64xj4nhv04ka8h406hhbfps6i420vvl";
             };
 
             installPhase = ''
               mkdir $out
               cp -R ./dist/* $out
             '';
-          });
+          };
 
         funkwhale = with final;
-          (let version = "1.1.1";
-          in stdenv.mkDerivation {
+          stdenv.mkDerivation {
             pname = "funkwhale";
             inherit version;
 
             src = fetchurl {
               url =
                 "https://dev.funkwhale.audio/funkwhale/funkwhale/-/archive/${version}/funkwhale-${version}.tar.bz2";
-              sha256 = "0qn26acfww6bbvcmwhvsgmlbc6y9bp3hjvhhywfi6f116x2vs81d";
+              sha256 = "0d0flp5v0swmiliz1bj1rxhpxqsbqy23jra3dnha12v41sklha87";
             };
 
             installPhase = ''
@@ -59,7 +58,7 @@
               platforms = platforms.linux;
               maintainers = with maintainers; [ critbase ];
             };
-          });
+          };
 
       };
 
