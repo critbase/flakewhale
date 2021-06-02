@@ -438,9 +438,6 @@ in {
           if ! test -e ${cfg.dataDir}/front; then
             ln -sr ${pkgs.funkwhale-frontend} ${cfg.dataDir}/front
           fi
-          if ! test -e ${cfg.dataDir}/api; then
-            ln -sr ${pkgs.funkwhale-api} ${cfg.dataDir}/api
-          fi
         '';
       };
 

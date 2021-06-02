@@ -16,28 +16,6 @@
     in {
       overlay = final: prev: {
 
-        funkwhale-api = with final;
-          stdenv.mkDerivation {
-            pname = "funkwhale-api";
-            inherit version;
-            inherit versionDevelopCommit;
-
-            nativeBuildInputs = [ pkgs.unzip ];
-
-            unpackCmd = "unzip $curSrc";
-
-            src = fetchurl {
-              url =
-                "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/${versionDevelopCommit}/download?job=build_api";
-              sha256 = "1vma5zgh1rh66jwacrs45v5gfw7lmh0vvwwvvxmkf886kqqsnv05";
-            };
-
-            installPhase = ''
-              mkdir $out
-              cp -R ./* $out
-            '';
-          };
-
         funkwhale-frontend = with final;
           stdenv.mkDerivation {
             pname = "funkwhale-frontend";
