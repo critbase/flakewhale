@@ -277,8 +277,11 @@ in {
       virtualHosts = let
         proxyConfig = ''
           proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-Host $http_host;
-          proxy_set_header X-Forwarded-Port $server_port;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+          proxy_set_header X-Forwarded-Host $http_x_forwarded_host;
+          proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
           proxy_redirect off;
         '';
         withSSL = cfg.protocol == "https";
