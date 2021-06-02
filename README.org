@@ -71,6 +71,12 @@ for example:
 
     the main reason for this is that the =funkwhale= user that funkwhale runs as generally does not (and probably shouldn't!) have permissions to even access music folders, or most folders, outside of =/var/lib/funkwhale=
 * ​TODO list
+** TODO Run funkwhale in a NixOS container
+:LOGBOOK:
+- State "TODO"       from              [2021-06-02 Wed 18:52]
+:END:
+currently, it doesn't seem to work at all when running under a container. It does not seem to be able to connect, though the services run just fine in the container.
+Thus far, I've been unable to diagnose this. All future work on trying to get containers to work will go in the =container= branch.
 ** TODO add options to use existing ACME hosts
 :LOGBOOK:
 - State "TODO"       from              [2021-04-28 Wed 02:15]
