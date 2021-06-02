@@ -283,6 +283,9 @@ in {
       recommendedGzipSettings = true;
       virtualHosts = let
         proxyConfig = (if cfg.nestedProxy == true then ''
+          proxy_set_header Host $http_x_forwarded_host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
           proxy_set_header X-Forwarded-Host $http_x_forwarded_host;
           proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
           proxy_redirect off;
