@@ -186,13 +186,6 @@ in {
       example = "funkwhale.example.com";
     };
 
-    nestedProxy = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        enable this if you have multiple reverse proxies in your setup. see <link xlink:href="https://github.com/michaelmob/docker-funkwhale/issues/19"/>.'';
-    };
-
     protocol = mkOption {
       type = types.enum [ "http" "https" ];
       default = "https";
@@ -282,18 +275,12 @@ in {
       recommendedProxySettings = true;
       recommendedGzipSettings = true;
       virtualHosts = let
-        proxyConfig = (if cfg.nestedProxy == true then ''
-          proxy_set_header Host $http_x_forwarded_host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
-          proxy_set_header X-Forwarded-Host $http_x_forwarded_host;
-          proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
-          proxy_redirect off;
-        '' else ''
+        proxyConfig = ''
+          proxy_set_header Host $host;
           proxy_set_header X-Forwarded-Host $http_host;
           proxy_set_header X-Forwarded-Port $server_port;
           proxy_redirect off;
-        '');
+        '';
         withSSL = cfg.protocol == "https";
       in {
         "${cfg.hostname}" = {
